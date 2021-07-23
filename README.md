@@ -35,8 +35,21 @@ log_data/2018/11/2018-11-13-events.json
    * start_time, hour, day, week, month, year, weekday  
   
 ## Project Template
-1. `etl.py` reads data from S3, processes that data using Spark, and writes them back to S3.  
-2. `dl.cfg` contains your AWS credentials.   
-3. `README.md` provides discussion on your process and decisions.  
+   * `etl.py` reads data from S3, processes that data using Spark, and writes them back to S3.  
+   * `dl.cfg` contains your AWS credentials.   
+   * `README.md` provides discussion on your process and decisions.  
 
-## Project Steps
+## Project Steps  
+   * Building an ETL pipeline that extracts their data from S3.  
+   * Processes them using Spark, and loads the data back into S3 as a set of dimensional tables.  
+   * Load tables into s3 in parquet format.  
+
+## How to run scripts
+
+   * Set environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` in `dl.cfg`.  
+   * Connect to S3 bucket and replace the output_data variable in the main() function with the S3 bucket URL.    
+   * Run ETL pipeline.  
+
+```bash
+$ python etl.py
+```  
