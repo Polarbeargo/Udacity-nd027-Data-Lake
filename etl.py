@@ -4,6 +4,7 @@ import os
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf, col
 from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, date_format
+from pyspark.sql.types import FloatType
 
 config = configparser.ConfigParser()
 config.read('dl.cfg')
@@ -123,7 +124,6 @@ def main():
     
     process_song_data(spark, input_data, output_data)    
     process_log_data(spark, input_data, output_data)
-
 
 if __name__ == "__main__":
     main()
