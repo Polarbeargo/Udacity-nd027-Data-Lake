@@ -2,7 +2,7 @@ import configparser
 from datetime import datetime
 import os
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import udf, col
+from pyspark.sql.functions import udf, col, to_timestamp
 from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, date_format
 from pyspark.sql.types import FloatType
 
@@ -117,10 +117,20 @@ def process_log_data(spark, input_data, output_data):
     songplays_col = ["start_time", "userId as user_id", "level", "song_id", "artist_id", "sessionid as\
     session_id", "artist_location as location", "userAgent as user_agent"]
     
-    songplays_table = songplays.selectExpr(songplays_col).dropDuplicates().dropna(subset=["user_id","artist_id", "song_id","start_time"]).withColumn("songplay_id",F.monotonically_increasing_id())
+    songplays_table = spark.sql("""
+        SELECT 
+            e.start_time,
+            e.userId, e.level, s.song_id,
+            s.artist_id, e.sessionId, e.userAgent,
+            t.year, t.month 
+        FROM events_table e
+        JOIN songs_table s ON e.song = s.title AND e.length = s.duration
+        JOIN artists_table a ON e.artist = a.artist_name AND a.artist_id = s.artist_id
+        JOIN time_table t ON e.start_time = t.start_time
+    """)
 
     # write songplays table to parquet files partitioned by year and month
-    songplays_table.write.parquet(os.path.join(output_data, 'songplays'), partitionBy=['year', 'month'])
+    songplays_table.write.partitionBy(['year', 'month']).parquet(output_data + "songplays_table.parquet")
 
 def main():
     """
