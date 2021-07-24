@@ -20,6 +20,9 @@ def create_spark_session():
     return spark
 
 def process_song_data(spark, input_data, output_data):
+    """
+    Read song data from s3, create the songs_table and artists_table then load them back to s3.
+    """
     # get filepath to song data file
     song_data = os.path.join(input_data, 'song_data', '*', '*', '*')
     
@@ -56,6 +59,9 @@ def process_song_data(spark, input_data, output_data):
     artists_table.write.parquet(os.path.join(output_data, 'artists'))
 
 def process_log_data(spark, input_data, output_data):
+    """
+    Read log data from s3, create the users table, songplays_table and time_table then load them back to s3.
+    """
     # get filepath to log data file
     log_data = os.path.join(input_data, 'log_data', '*', '*')
 
@@ -117,6 +123,9 @@ def process_log_data(spark, input_data, output_data):
     songplays_table.write.parquet(os.path.join(output_data, 'songplays'), partitionBy=['year', 'month'])
 
 def main():
+    """
+    Extracts songs and events data from S3.Transform them into a set of fact and dimension tablesas using Spark, and load tables into s3 in parquet format.
+    """
     spark = create_spark_session()
     input_data = "s3a://udacity-dend/"
     output_data = ""
