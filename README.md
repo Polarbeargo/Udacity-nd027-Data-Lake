@@ -26,13 +26,13 @@ log_data/2018/11/2018-11-13-events.json
 ## Dimension Tables  
 
 2. users - users in the app  
-   * user_id, first_name, last_name, gender, level  
+   * user_id (string), first_name (string), last_name (string), gender (string), level (string)  
 3. songs - songs in music database    
-   * song_id, title, artist_id, year, duration  
+   * song_id (long), title (string), artist_id (string), year (integer), duration (double)    
 4. artists - artists in music database   
-   * artist_id, name, location, latitude, longitude  
+   * artist_id (string), name (string), location (string), latitude (double), longitude (double)    
 5. time - timestamps of records in songplays broken down into specific units  
-   * start_time, hour, day, week, month, year, weekday  
+   * start_time (timestamp), hour (integer), day (integer), week (integer), month (integer), year (integer), weekday (string)   
   
 ## Project Template
    * `etl.py` reads data from S3, processes that data using Spark, and writes them back to S3.  
